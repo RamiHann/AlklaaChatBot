@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} | Chatbot App</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Animate.css for motion effects -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+<nav class="navbar animate__animated animate__fadeInDown">
+    <div class="container">
+        <a href="{{ url_for('home') }}" class="logo">ChatbotApp</a>
+        <ul class="nav-links">
+            {% if session.get('user_id') %}
+            {% if session.get('is_admin') %}
+            <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+            {% else %}
+            <li><a href="{{ url_for('chat') }}">Chat</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }} animate__animated animate__fadeIn">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+<div class="content container animate__animated animate__fadeInUp">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

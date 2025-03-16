@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="faq-container">
+    <h2>Manage FAQs</h2>
+    <form method="POST" action="{{ url_for('admin_faq') }}">
+        <textarea name="question" placeholder="Enter your question here..." required></textarea>
+        <textarea name="answer" placeholder="Enter the answer here..." required></textarea>
+        <button type="submit">Add FAQ</button>
+    </form>
+    <br>
+    <h3>Existing FAQs</h3>
+    {% if faqs %}
+    <ul>
+        {% for faq in faqs %}
+        <li>
+            <strong>Question:</strong> {{ faq.question }}<br>
+            <strong>Answer:</strong> {{ faq.answer }}<br>
+            <a class="btn" href="{{ url_for('edit_faq', faq_id=faq.id) }}">Edit</a>
+            <form style="display:inline;" method="POST" action="{{ url_for('delete_faq', faq_id=faq.id) }}">
+                <button type="submit" class="btn">Delete</button>
+            </form>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No FAQs available.</p>
+    {% endif %}
+    <br>
+    <a class="btn" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</div>
+{% endblock %}

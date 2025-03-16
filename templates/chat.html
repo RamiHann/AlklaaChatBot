@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">Chatbot</div>
+    <div class="chat-box" id="chat-box"></div>
+    <form id="chat-form" class="chat-form">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+    function appendMessage(message, sender) {
+        const chatBox = document.getElementById('chat-box');
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+        msgDiv.textContent = message;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    document.getElementById('chat-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        if (!message) return;
+        appendMessage(message, 'user');
+        userInput.value = '';
+        const response = await fetch('/chat_api', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: message})
+        });
+        const data = await response.json();
+        appendMessage(data.reply, 'bot');
+    });
+</script>
+{% endblock %}

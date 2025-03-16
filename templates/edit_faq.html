@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="faq-container">
+    <h2>Edit FAQ</h2>
+    <form method="POST" action="{{ url_for('edit_faq', faq_id=faq.id) }}">
+        <textarea name="question" placeholder="Edit question..." required>{{ faq.question }}</textarea>
+        <textarea name="answer" placeholder="Edit answer..." required>{{ faq.answer }}</textarea>
+        <button type="submit">Update FAQ</button>
+    </form>
+    <br>
+    <a class="btn" href="{{ url_for('admin_faq') }}">Back to FAQ Management</a>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-dashboard">
+    <h2>Admin Dashboard</h2>
+    <h3>Registered Users</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Plain Password</th>
+            <th>Is Admin</th>
+            <th>Conversations</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.plain_password }}</td>
+            <td>{{ user.is_admin }}</td>
+            <td>
+                {% if user.conversations %}
+                <ul>
+                    {% for convo in user.conversations %}
+                    <li>
+                        <strong>Started:</strong> {{ convo.start_time }}<br>
+                        <pre>{{ convo.conversation_data }}</pre>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                No conversations.
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <!-- Button to manage FAQs -->
+    <a class="btn" href="{{ url_for('admin_faq') }}">Manage FAQs</a>
+    <br><br>
+    <a class="btn" href="{{ url_for('logout') }}">Logout</a>
+</div>
+{% endblock %}
