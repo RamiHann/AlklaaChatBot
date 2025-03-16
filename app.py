@@ -2,13 +2,18 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 import bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Replace with a secure key in production
 
-# Configure SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatbot.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Example: store the DB in the same folder as app.py
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+db_path = os.path.join(BASEDIR, "chatbot.db")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 
 
